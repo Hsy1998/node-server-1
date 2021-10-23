@@ -8,11 +8,12 @@ const p = require('path')
 
 const app = express()
 
-app.options('/upload', cors())
 app.get('/', (req, res) => {
   res.send('hello nodejs')
 })
 
+
+app.options('/upload', cors())
 app.post('/upload', cors(), upload.single('file'), (req, res) => {
   let filename = req.file.filename
   let object = {
@@ -22,15 +23,16 @@ app.post('/upload', cors(), upload.single('file'), (req, res) => {
 })
 
 app.get('/upload/:key', cors(), (req, res) => {
-  res.sendFile(`upload/${req.params.key}`, {
-    root: __dirname,
-    headers: {
-      'Content-Type': 'image/jpeg'
-    }
-  }, (error) => {
-    console.log(error);
-  })
+  res.sendFile(
+    `uploads/${req.params.key}`, {
+      root: __dirname,
+      headers: {
+        'Content-Type': 'image/jpeg'
+      }
+    }, (error) => {
+      console.log(error);
+    })
 })
 
-var port = process.env.PORT || 3000
+var port = process.env.PORT || 3001
 app.listen(port)
